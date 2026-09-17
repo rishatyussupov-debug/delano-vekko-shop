@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DELANO & VEKKO Shop</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #111;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 15px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .product h3 {
+      margin: 0 0 8px;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .add {
+      background: #111827;
+      color: white;
+      width: 100%;
+    }
+
+    .cart {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111827;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .spacer {
+      height: 80px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    DELANO & VEKKO
+  </div>
+
+  <div class="container">
+
+    <div class="product">
+      <h3>DELANO 9072-1Q</h3>
+      <div class="price">12 500 ₸</div>
+      <button class="add" onclick="addToCart(12500)">
+        Добавить в корзину
+      </button>
+    </div>
+
+    <div class="product">
+      <h3>DELANO 9072-F</h3>
+      <div class="price">9 000 ₸</div>
+      <button class="add" onclick="addToCart(9000)">
+        Добавить в корзину
+      </button>
+    </div>
+
+    <div class="product">
+      <h3>VEKKO Смеситель</h3>
+      <div class="price">10 500 ₸</div>
+      <button class="add" onclick="addToCart(10500)">
+        Добавить в корзину
+      </button>
+    </div>
+
+    <div class="spacer"></div>
+
+  </div>
+
+  <div class="cart" id="cart">
+    Корзина: 0 шт. | 0 ₸
+  </div>
+
+  <script>
+    let count = 0;
+    let total = 0;
+
+    function addToCart(price) {
+      count++;
+      total += price;
+
+      document.getElementById("cart").innerText =
+        "Корзина: " + count + " шт. | " +
+        total.toLocaleString("ru-RU") + " ₸";
+    }
+  </script>
+
+</body>
+</html>
