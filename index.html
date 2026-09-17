@@ -3,76 +3,252 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>DELANO & VEKKO Shop</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #111;
+      background: #f3f4f6;
+      color: #111827;
+      padding-bottom: 95px;
     }
 
     .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
       background: #111827;
       color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
+      padding: 16px;
     }
 
-    .container {
-      padding: 15px;
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .search {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 14px;
+      background: white;
+      position: sticky;
+      top: 105px;
+      z-index: 9;
+    }
+
+    .categories button {
+      white-space: nowrap;
+      border: none;
+      background: #e5e7eb;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .categories button.active {
+      background: #111827;
+      color: white;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 12px;
     }
 
     .product {
       background: white;
-      border-radius: 14px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .product img {
+      width: 100%;
+      height: 165px;
+      object-fit: contain;
+      background: #fff;
+      display: block;
+    }
+
+    .product-info {
+      padding: 12px;
+    }
+
+    .brand {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 4px;
+      font-weight: bold;
     }
 
     .product h3 {
-      margin: 0 0 8px;
+      margin: 0;
+      font-size: 15px;
+      min-height: 36px;
+    }
+
+    .article {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #6b7280;
     }
 
     .price {
-      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 10px;
+      font-size: 18px;
+      margin: 10px 0;
     }
 
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .add {
-      background: #111827;
-      color: white;
+    .add-btn {
       width: 100%;
-    }
-
-    .cart {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      border: none;
       background: #111827;
       color: white;
-      padding: 15px;
-      text-align: center;
+      padding: 11px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .quantity-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f3f4f6;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .quantity-box button {
+      border: none;
+      background: #111827;
+      color: white;
+      width: 38px;
+      height: 38px;
+      font-size: 20px;
+    }
+
+    .quantity {
+      font-weight: bold;
+    }
+
+    .cart-bar {
+      position: fixed;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      background: #111827;
+      color: white;
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+
+    .cart-info {
+      font-size: 14px;
+    }
+
+    .cart-total {
       font-size: 18px;
       font-weight: bold;
+      margin-top: 3px;
     }
 
-    .spacer {
-      height: 80px;
+    .checkout {
+      border: none;
+      background: white;
+      color: #111827;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 100;
+      padding: 15px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      max-height: 90vh;
+      overflow-y: auto;
+      margin-top: 5vh;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    .cart-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .form-input {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .order-btn {
+      width: 100%;
+      margin-top: 15px;
+      border: none;
+      background: #111827;
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      width: 100%;
+      margin-top: 10px;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      background: #e5e7eb;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 10px;
+      color: #6b7280;
     }
   </style>
 </head>
@@ -80,56 +256,412 @@
 <body>
 
   <div class="header">
-    DELANO & VEKKO
+    <div class="logo">DELANO & VEKKO</div>
+
+    <input
+      class="search"
+      id="searchInput"
+      type="text"
+      placeholder="Поиск по модели или артикулу..."
+      oninput="renderProducts()"
+    >
   </div>
 
-  <div class="container">
-
-    <div class="product">
-      <h3>DELANO 9072-1Q</h3>
-      <div class="price">12 500 ₸</div>
-      <button class="add" onclick="addToCart(12500)">
-        Добавить в корзину
-      </button>
-    </div>
-
-    <div class="product">
-      <h3>DELANO 9072-F</h3>
-      <div class="price">9 000 ₸</div>
-      <button class="add" onclick="addToCart(9000)">
-        Добавить в корзину
-      </button>
-    </div>
-
-    <div class="product">
-      <h3>VEKKO Смеситель</h3>
-      <div class="price">10 500 ₸</div>
-      <button class="add" onclick="addToCart(10500)">
-        Добавить в корзину
-      </button>
-    </div>
-
-    <div class="spacer"></div>
-
+  <div class="categories">
+    <button class="active" onclick="setCategory('all', this)">Все</button>
+    <button onclick="setCategory('delano', this)">DELANO</button>
+    <button onclick="setCategory('vekko', this)">VEKKO</button>
+    <button onclick="setCategory('shower', this)">Душевые системы</button>
+    <button onclick="setCategory('accessories', this)">Аксессуары</button>
   </div>
 
-  <div class="cart" id="cart">
-    Корзина: 0 шт. | 0 ₸
+  <div class="products" id="products"></div>
+
+  <div class="cart-bar">
+    <div>
+      <div class="cart-info">
+        Корзина: <span id="cartCount">0</span> шт.
+      </div>
+
+      <div class="cart-total">
+        <span id="cartTotal">0</span> ₸
+      </div>
+    </div>
+
+    <button class="checkout" onclick="openCart()">
+      Открыть
+    </button>
   </div>
 
-  <script>
-    let count = 0;
-    let total = 0;
+  <div class="modal" id="cartModal">
+    <div class="modal-content">
 
-    function addToCart(price) {
-      count++;
-      total += price;
+      <h2>Ваш заказ</h2>
 
-      document.getElementById("cart").innerText =
-        "Корзина: " + count + " шт. | " +
-        total.toLocaleString("ru-RU") + " ₸";
+      <div id="cartItems"></div>
+
+      <input
+        id="customerName"
+        class="form-input"
+        type="text"
+        placeholder="Ваше имя"
+      >
+
+      <input
+        id="customerPhone"
+        class="form-input"
+        type="tel"
+        placeholder="Телефон"
+      >
+
+      <input
+        id="customerCity"
+        class="form-input"
+        type="text"
+        placeholder="Город"
+      >
+
+      <button class="order-btn" onclick="makeOrder()">
+        Оформить заказ
+      </button>
+
+      <button class="close-btn" onclick="closeCart()">
+        Закрыть
+      </button>
+
+    </div>
+  </div>
+
+<script>
+
+const products = [
+
+  {
+    id: 1,
+    brand: "DELANO",
+    name: "Смеситель 9072-1Q",
+    article: "9072-1Q",
+    price: 12500,
+    category: "delano",
+    image: "9072-1q.jpg"
+  },
+
+  {
+    id: 2,
+    brand: "DELANO",
+    name: "Смеситель 9072-F",
+    article: "9072-F",
+    price: 9000,
+    category: "delano",
+    image: "9072-f.jpg"
+  },
+
+  {
+    id: 3,
+    brand: "VEKKO",
+    name: "Смеситель для кухни",
+    article: "V001",
+    price: 10500,
+    category: "vekko",
+    image: "v001.jpg"
+  },
+
+  {
+    id: 4,
+    brand: "DELANO",
+    name: "Душевая система",
+    article: "D001",
+    price: 32500,
+    category: "shower",
+    image: "d001.jpg"
+  },
+
+  {
+    id: 5,
+    brand: "VEKKO",
+    name: "Душевой шланг",
+    article: "A001",
+    price: 3500,
+    category: "accessories",
+    image: "a001.jpg"
+  }
+
+];
+
+let selectedCategory = "all";
+let cart = {};
+
+function setCategory(category, button) {
+
+  selectedCategory = category;
+
+  document.querySelectorAll(".categories button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  button.classList.add("active");
+
+  renderProducts();
+}
+
+function renderProducts() {
+
+  const search =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  const container =
+    document.getElementById("products");
+
+  container.innerHTML = "";
+
+  const filtered = products.filter(product => {
+
+    const categoryMatch =
+      selectedCategory === "all" ||
+      product.category === selectedCategory;
+
+    const searchMatch =
+      product.name.toLowerCase().includes(search) ||
+      product.article.toLowerCase().includes(search) ||
+      product.brand.toLowerCase().includes(search);
+
+    return categoryMatch && searchMatch;
+  });
+
+  if (filtered.length === 0) {
+
+    container.innerHTML =
+      '<div class="empty">Товар не найден</div>';
+
+    return;
+  }
+
+  filtered.forEach(product => {
+
+    const quantity = cart[product.id] || 0;
+
+    container.innerHTML += `
+
+      <div class="product">
+
+        <img src="${product.image}" alt="${product.name}">
+
+        <div class="product-info">
+
+          <div class="brand">
+            ${product.brand}
+          </div>
+
+          <h3>
+            ${product.name}
+          </h3>
+
+          <div class="article">
+            Артикул: ${product.article}
+          </div>
+
+          <div class="price">
+            ${formatPrice(product.price)} ₸
+          </div>
+
+          ${
+            quantity === 0
+
+            ?
+
+            `
+            <button
+              class="add-btn"
+              onclick="changeQuantity(${product.id}, 1)"
+            >
+              В корзину
+            </button>
+            `
+
+            :
+
+            `
+            <div class="quantity-box">
+
+              <button
+                onclick="changeQuantity(${product.id}, -1)"
+              >
+                −
+              </button>
+
+              <span class="quantity">
+                ${quantity}
+              </span>
+
+              <button
+                onclick="changeQuantity(${product.id}, 1)"
+              >
+                +
+              </button>
+
+            </div>
+            `
+          }
+
+        </div>
+
+      </div>
+
+    `;
+  });
+}
+
+function changeQuantity(id, change) {
+
+  if (!cart[id]) {
+    cart[id] = 0;
+  }
+
+  cart[id] += change;
+
+  if (cart[id] <= 0) {
+    delete cart[id];
+  }
+
+  updateCart();
+  renderProducts();
+}
+
+function updateCart() {
+
+  let count = 0;
+  let total = 0;
+
+  products.forEach(product => {
+
+    const qty = cart[product.id] || 0;
+
+    count += qty;
+    total += qty * product.price;
+
+  });
+
+  document.getElementById("cartCount").innerText = count;
+  document.getElementById("cartTotal").innerText = formatPrice(total);
+}
+
+function formatPrice(price) {
+  return price.toLocaleString("ru-RU");
+}
+
+function openCart() {
+
+  const cartItems =
+    document.getElementById("cartItems");
+
+  cartItems.innerHTML = "";
+
+  let hasItems = false;
+
+  products.forEach(product => {
+
+    const qty = cart[product.id] || 0;
+
+    if (qty > 0) {
+
+      hasItems = true;
+
+      cartItems.innerHTML += `
+
+        <div class="cart-item">
+
+          <strong>
+            ${product.brand} ${product.article}
+          </strong>
+
+          <br>
+
+          ${qty} шт. ×
+          ${formatPrice(product.price)} ₸
+
+          <br>
+
+          <strong>
+            ${formatPrice(qty * product.price)} ₸
+          </strong>
+
+        </div>
+
+      `;
     }
-  </script>
+  });
+
+  if (!hasItems) {
+
+    cartItems.innerHTML =
+      "<p>Корзина пока пустая.</p>";
+
+  }
+
+  document.getElementById("cartModal")
+    .style.display = "block";
+}
+
+function closeCart() {
+
+  document.getElementById("cartModal")
+    .style.display = "none";
+
+}
+
+function makeOrder() {
+
+  const name =
+    document.getElementById("customerName").value;
+
+  const phone =
+    document.getElementById("customerPhone").value;
+
+  const city =
+    document.getElementById("customerCity").value;
+
+  let message = "Новый заказ DELANO & VEKKO\n\n";
+
+  let total = 0;
+
+  products.forEach(product => {
+
+    const qty = cart[product.id] || 0;
+
+    if (qty > 0) {
+
+      const itemTotal =
+        qty * product.price;
+
+      total += itemTotal;
+
+      message +=
+        `${product.brand} ${product.article}\n` +
+        `${qty} шт. × ${formatPrice(product.price)} ₸\n` +
+        `${formatPrice(itemTotal)} ₸\n\n`;
+
+    }
+
+  });
+
+  message +=
+    `Итого: ${formatPrice(total)} ₸\n\n` +
+    `Имя: ${name}\n` +
+    `Телефон: ${phone}\n` +
+    `Город: ${city}`;
+
+  navigator.clipboard.writeText(message);
+
+  alert(
+    "Заказ сформирован и скопирован. На следующем этапе подключим автоматическую отправку заказа менеджеру."
+  );
+
+}
+
+renderProducts();
+
+</script>
 
 </body>
 </html>
