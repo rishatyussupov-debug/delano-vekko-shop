@@ -368,23 +368,33 @@ const products = [
 
   {
     id: 4,
-    brand: "DELANO",
-    name: "Душевая система",
-    article: "D001",
-    price: 32500,
-    category: "shower",
-    image: "d001.jpg"
+  brand: "DELANO",
+  name: "Душевая система",
+  article: "VK-9023",
+  price: 35000,
+  category: "shower",
+  image: "Vk9023.JPG",
+  images: [
+    "9072.png",
+    "9072-1.png"
+  ]
   },
 
-  {
-    id: 5,
-    brand: "VEKKO",
-    name: "Душевой шланг",
-    article: "A001",
-    price: 3500,
-    category: "accessories",
-    image: "a001.jpg"
-  },
+{
+  id: 5,
+  brand: "DELANO",
+  name: "Душевая система",
+  article: "VK-9023",
+  price: 35000,
+  category: "shower",
+  image: "Vk9023.JPG",
+  images: [
+    "9072H-1.png",
+    "9072H-2.png",
+    "9072H-3.png",
+    "9072H-4.png"
+  ]
+},
   {
   id: 6,
   brand: "DELANO",
@@ -454,7 +464,12 @@ function renderProducts() {
 
       <div class="product">
 
-        <img src="${product.image}" alt="${product.name}">
+        <img
+  src="${product.image}"
+  alt="${product.name}"
+  onclick="openGallery(${product.id})"
+  style="cursor:pointer;"
+>
 
         <div class="product-info">
 
@@ -671,6 +686,115 @@ function makeOrder() {
 renderProducts();
 
 </script>
+<div id="gallery" class="gallery">
+  <button class="gallery-close" onclick="closeGallery()">×</button>
 
+  <button class="gallery-prev" onclick="changePhoto(-1)">‹</button>
+
+  <img id="galleryImage">
+
+  <button class="gallery-next" onclick="changePhoto(1)">›</button>
+
+  <div id="galleryCounter" class="gallery-counter"></div>
+</div>
+
+<style>
+.gallery {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.95);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery img {
+  max-width: 95%;
+  max-height: 85%;
+  object-fit: contain;
+}
+
+.gallery-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: white;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 28px;
+}
+
+.gallery-prev,
+.gallery-next {
+  position: absolute;
+  top: 50%;
+  border: none;
+  background: rgba(255,255,255,.8);
+  width: 42px;
+  height: 55px;
+  font-size: 35px;
+}
+
+.gallery-prev {
+  left: 10px;
+}
+
+.gallery-next {
+  right: 10px;
+}
+
+.gallery-counter {
+  position: absolute;
+  bottom: 25px;
+  color: white;
+  font-size: 16px;
+}
+</style>
+
+<script>
+let galleryImages = [];
+let galleryIndex = 0;
+
+function openGallery(productId) {
+
+  const product = products.find(p => p.id === productId);
+
+  galleryImages = product.images || [product.image];
+  galleryIndex = 0;
+
+  document.getElementById("gallery").style.display = "flex";
+
+  showGalleryPhoto();
+}
+
+function showGalleryPhoto() {
+
+  document.getElementById("galleryImage").src =
+    galleryImages[galleryIndex];
+
+  document.getElementById("galleryCounter").innerText =
+    (galleryIndex + 1) + " / " + galleryImages.length;
+}
+
+function changePhoto(direction) {
+
+  galleryIndex += direction;
+
+  if (galleryIndex < 0)
+    galleryIndex = galleryImages.length - 1;
+
+  if (galleryIndex >= galleryImages.length)
+    galleryIndex = 0;
+
+  showGalleryPhoto();
+}
+
+function closeGallery() {
+  document.getElementById("gallery").style.display = "none";
+}
+</script>
 </body>
 </html>
