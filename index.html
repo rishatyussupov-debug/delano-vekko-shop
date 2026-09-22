@@ -113,7 +113,12 @@
       font-size: 12px;
       color: #6b7280;
     }
-
+    .height {
+      margin-top: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+  }
     .price {
       font-weight: bold;
       font-size: 18px;
@@ -414,6 +419,11 @@ function renderProducts() {
           <div class="article">
             Артикул: ${product.article}
           </div>
+          ${product.height ? `
+          <div class="height">
+            Высота: ${product.height}
+            </div>
+          ` : ""}
 
           <div class="price">
             ${formatPrice(product.price)} ₸
